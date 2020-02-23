@@ -24,7 +24,7 @@ function log(...args: any[]) {
 function logF(f: Function, ...args: any) {
   const name = splitToWords(f.name);
   log('color_darkgoldenrod', name);
-  logToHTML(name);
+  logToHTML(name, 'title');
   f(args);
 }
 
@@ -32,8 +32,9 @@ function delimeterMsgHTML(msg: string) {
   appendMsgToHTML(msg, 'delimeter-msg');
 }
 
-function logToHTML(...args: any[]) {
-  appendMsgToHTML(args.join('\n'), 'msg');
+function logToHTML(msg: [] | string, klass = 'text') {
+  msg = Array.isArray(msg) ? msg.join('\n') : msg;
+  appendMsgToHTML(msg, klass);
 }
 
 function appendMsgToHTML(msg: string, klass: string) {
@@ -51,7 +52,7 @@ function splitToWords(str: string): string {
   return str
     .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
     .split(' ')
-    .map((str, i) => i == 0 ? capitalize(str) : str.toLowerCase())
+    .map((str, i) => i === 0 ? capitalize(str) : str.toLowerCase())
     .join(' ');
 }
 
