@@ -1,6 +1,6 @@
 import { delimeterMsg, logF, logToHTML } from "./utils";
 
-function gettingStartedWithDockerfile() {
+function usingDockerfile() {
   logToHTML('' +
     'Docker images can consist of several layers. For example, the ubuntu layer, and then a database layer ect..' +
     'Every layer has a unique id and can be reused between different images. The layers are Read-Only (R/O). ' +
@@ -10,37 +10,35 @@ function gettingStartedWithDockerfile() {
     '"workdir" - <workdir_name>, run - which command we want to run against a source code, "expose" - which post we expose, "entrypoint" - run arguments. ' +
     `Example of the dockerfile:
       FROM node:latest
-      MAINTAINER Leon Yalin
-      ENV NODE_ENV=PRODUCTION
+      LABEL author="Leon Yalin"
+
+      ENV NODE_ENV=production
       ENV PORT=3000
-      COPY . /var/www
-      WORKDIR /var/www
+      ARG workdir=/var/www
+
+      COPY . \${workdir}
+      WORKDIR \${workdir}
+
       RUN npm install
-      EXPOSE 8080
-      ENTRYPOINT ["node", "server.js"]
-    ` +
-    ''
+      EXPOSE $PORT
+      ENTRYPOINT ["npm", "start"]` +
+    'We can use the official Docker Misrosoft VSCode extension to work with docker images, containers & dockerfiles.'
   );
 }
 
-// function containersAndVolumes() {
-//   logToHTML('' +
-//     'Volume is a special type of directory in a container that is mapped to a host filesystem. Volume can be shared and reused' +
-//     'among containers. Updating the image or deleting a container won\'t affect the data volume. ' +
-//     'Docker gives the default location for each volume. It can be viewed using the "docker inspect mycontainer" command. ' +
-//     'It can also be overiden by using the -v host_dir:container_dir, e.g. "docker run -p 8080:3000 -v $(pwd):var/www node"' +
-//     'When removing a container, you can also remove its volume by typing "docker rm -v <container_id>". ' +
-//     'The cool thing about volumes is that we can link our source code to container and run it there, even without the required env.' +
-//     'For example, we can go to the source code folder and run the command "docker run -p 8080:3000 -v $(pwd):var/www -w "/var/www" node npm start".' +
-//     'Additional example for cmd: "docker run -it -p 80:3000 -v %cd%:/var/www -w /var/www node sh".' +
-//     'This will link the current directory to the container, set it as current directory (using the -w option) and run the "npm start" command.' +
-//     'And we don\'t have the nodejs to be installed our our machine! Think about some complex installations, like APS.NET or JAVA...' +
-//     'One more use case is to develop locally and to test the STAGING/PRODUCTION environments on docker containers.' +
-//     ''
-//   );
-// }
+function buildingAndPublishingImages() {
+  logToHTML('' +
+    'After we have a Dockerfile, we can use it to build an image from it. We can build the image using the command: ' +
+    '"docker build" -f <dockerfile_path> -t <tag_name> <ctx_dir>, e.g. "docker build -t leonyyalin/node . "' +
+    'After we\'ve built our image, we can run it, e.g. using "docker run -d  -p 8080:3000 leonyalin/node". The -d stands for ' +
+    '"detached mode" and it is used to free the terminal from container output, and be able to use terminal as usual. ' +
+    'We can have multi-stages dockerfiles that build multiple containers. This is useful for building one image from another. ' +
+    'To push the image we created to the docker hub, we just type "docker push leonyyalin/node"'
+  );
+}
 
 export default function buildingCustomImagesWithDockerfile() {
   delimeterMsg('BUILDING CUSTOM IMAGES WITH A DOCKERFILE');
-  logF(gettingStartedWithDockerfile);
+  logF(usingDockerfile);
+  logF(buildingAndPublishingImages);
 }
