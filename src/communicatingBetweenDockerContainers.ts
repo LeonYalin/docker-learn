@@ -30,11 +30,6 @@ function usingContainerNetworks() {
     'First, we create a network using the command "docker network create --driver bridge <network_name>". We can wiew it using "docker network ls"' +
     'Then, we run containers and provide an additional --net=<network_name> to connect to the network. ' +
     'To check which containers run inside the network, we can type "docker network inspect <network_name>' +
-    '' +
-    'Additional example for cmd: "docker run -it -p 80:3000 -v %cd%:/var/www -w /var/www node sh".' +
-    'This will link the current directory to the container, set it as current directory (using the -w option) and run the "npm start" command.' +
-    'And we don\'t have the nodejs to be installed our our machine! Think about some complex installations, like APS.NET or JAVA...' +
-    'One more use case is to develop locally and to test the STAGING/PRODUCTION environments on docker containers.' +
     ''
   );
 }
